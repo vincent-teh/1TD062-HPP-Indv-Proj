@@ -6,27 +6,31 @@
 #include "calc/calc.h"
 
 
+#define PRINTING 1
+
 typedef struct {
-    size_t rows;
-    size_t cols;
+    size_t rows_A;
+    size_t cols_A_row_B;
+    size_t cols_B;
     int threads;
 } MatrixConfig;
 
 
 MatrixConfig parse_args(int argc, char const *argv[])
 {
-    MatrixConfig config = {0, 0, 0};
+    MatrixConfig config = {0, 0, 0, 0};
 
-    if (argc != 4) {
-        fprintf(stderr, "Usage: %s <rows> <cols> <threads>\n", argv[0]);
+    if (argc != 5) {
+        fprintf(stderr, "Usage: %s <rows A> <cols A rows B> <cols B> <threads>\n", argv[0]);
         return config;
     }
 
-    config.rows = (size_t)atoi(argv[1]);
-    config.cols = (size_t)atoi(argv[2]);
-    config.threads = atoi(argv[3]);
+    config.rows_A = (size_t)atoi(argv[1]);
+    config.cols_A_row_B = (size_t)atoi(argv[2]);
+    config.cols_B = (size_t)atoi(argv[3]);
+    config.threads = atoi(argv[4]);
 
-    if (config.rows <= 0 || config.cols <= 0 || config.threads <= 0) {
+    if (config.rows_A <= 0 || config.cols_A_row_B <= 0 || config.cols_B <=0 || config.threads <= 0) {
         fprintf(stderr, "Error: Rows, columns, and threads must be positive integers.\n");
         return config;
     }
@@ -38,29 +42,35 @@ MatrixConfig parse_args(int argc, char const *argv[])
 int main(int argc, char const *argv[])
 {
     MatrixConfig config = parse_args(argc, argv);
-    const size_t n = config.rows;
-    Matrix mat_A = generate_random_mat(n, n);
-    Matrix mat_B = generate_random_mat(n, n);
-    Matrix mat_C = generate_zeros_mat(n, n);
+    // Matrix mat_A = generate_sequential_mat(config.rows_A, config.cols_A_row_B);
+    // Matrix mat_B = generate_sequential_mat(config.cols_A_row_B, config.cols_B);
+    Matrix mat_A = generate_random_mat(config.rows_A, config.cols_A_row_B);
+    Matrix mat_B = generate_random_mat(config.cols_A_row_B, config.cols_B);
+    Matrix mat_C = generate_zeros_mat(config.rows_A, config.cols_B);
 
     clock_t start, end;
     double cpu_time_used;
 
+
+    if (PRINTING) {
+        print_mat(mat_A, "A");
+        print_mat(mat_B, "B");
+    }
+
+    start = clock();
+    mat_mul_naive(mat_A, mat_B, &mat_C);
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Time taken naive: %f seconds\n", cpu_time_used);
+    print_mat(mat_C, "Naive");
 
     start = clock();
     mat_mul_strenssen(mat_A, mat_B, &mat_C);
     end = clock();
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("Time taken Stranssen: %f seconds\n", cpu_time_used);
+    if (PRINTING) print_mat(mat_C, "Stranssen");
 
-    print_mat(mat_C, "Stranssen");
-    start = clock();
-    mat_mul_naive(mat_A, mat_B, &mat_C);
-    end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("Time taken naive: %f seconds\n", cpu_time_used);
-
-    print_mat(mat_C, "Naive");
     destroy_mat(mat_A);
     destroy_mat(mat_B);
     destroy_mat(mat_C);

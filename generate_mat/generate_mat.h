@@ -20,7 +20,7 @@ typedef struct
  * @param n size of the matrix.
  * @return double** Pointer to the matrix. Null if allocation error.
  */
-Matrix generate_sequential_mat(size_t n);
+Matrix generate_sequential_mat(size_t nrow, size_t ncol);
 
 
 /**

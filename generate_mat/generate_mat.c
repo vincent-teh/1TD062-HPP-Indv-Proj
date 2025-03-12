@@ -1,19 +1,19 @@
 #include "generate_mat.h"
 
 
-Matrix generate_sequential_mat(size_t n)
+Matrix generate_sequential_mat(size_t nrow, size_t ncol)
 {
-    Matrix mat = {.matrix=(double**) malloc(n * sizeof(double *)),
-                  .row=n,
-                  .col=n
+    Matrix mat = {.matrix=(double**) malloc(nrow * sizeof(double *)),
+                  .row=nrow,
+                  .col=ncol
                  };
     if (mat.matrix == NULL) {
-        printf("Memory allocation with size %ld failed!\n", n);
+        printf("Memory allocation with size %ld failed!\n", nrow);
         return mat;
     }
 
-    for (size_t i=0; i<n; i++) {
-        mat.matrix[i] = (double *) malloc(n * sizeof(double));
+    for (size_t i=0; i<nrow; i++) {
+        mat.matrix[i] = (double *) malloc(ncol * sizeof(double));
         if (mat.matrix[i] == NULL) {
             fprintf(stderr, "Memory allocation failed.\n");
             for (size_t j = 0; j < i; j++) {
@@ -24,9 +24,9 @@ Matrix generate_sequential_mat(size_t n)
         }
     }
 
-    for (size_t i=0; i<n; i++) {
-        for (size_t j=0; j<n; j++) {
-            mat.matrix[i][j] = i + j;
+    for (size_t i=0; i<nrow; i++) {
+        for (size_t j=0; j<ncol; j++) {
+            mat.matrix[i][j] = (i + j) % 100;
         }
     }
 
@@ -95,7 +95,7 @@ Matrix generate_random_mat(size_t nrow, size_t ncol)
 
 void destroy_mat(Matrix mat)
 {
-    for (size_t i=0; i<mat.col; i++)
+    for (size_t i=0; i<mat.row; i++)
         free(mat.matrix[i]);
     free(mat.matrix);
     return;

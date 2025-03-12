@@ -7,16 +7,18 @@
 #include "../generate_mat/generate_mat.h"
 #include "../utils/helper_func.h"
 
-#define NORMAL_MUL_THRESHOLD 128
+#define OUTER_THRESHOLD 128
+#define INNER_THRESHOLD 64
+#define SCALED_THRESHOLD_FACTOR 1000
 
 
 /**
  * @brief Multiplication of 2 square matrices of the same size.
- * 
+ *
  * @param mat_A A matrix, n*n.
  * @param n Size of the both matrix.
  * @param B B matrix, n*n.
- * @return matrix 
+ * @return matrix
  */
 void mat_mul_naive(Matrix mat_A, Matrix mat_B, Matrix* mat_C);
 
