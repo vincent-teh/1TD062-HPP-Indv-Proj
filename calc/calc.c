@@ -67,41 +67,43 @@ void mat_mul_strenssen(Matrix A, Matrix B, Matrix* C)
         printf("The size of the resultant matrix must agree with the input!\n");
         return;
     }
-    if (A.col < 10) {
+    if (A.col <= NORMAL_MUL_THRESHOLD) {
         mat_mul_naive(A, B, C);
         return;
     }
 
-    size_t split_idx = A.row / 2;
+    size_t split_idx = (A.row + 1) / 2; // Ceiling division.
 
     Matrix a_sub[4];
     Matrix b_sub[4];
     Matrix c_sub[4];
     Matrix M_sub[7];
     for (int i=0; i<4; i++) {
-        a_sub[i] = generate_zeros_mat(split_idx);
-        b_sub[i] = generate_zeros_mat(split_idx);
-        c_sub[i] = generate_zeros_mat(split_idx);
+        a_sub[i] = generate_zeros_mat(split_idx, split_idx);
+        b_sub[i] = generate_zeros_mat(split_idx, split_idx);
+        c_sub[i] = generate_zeros_mat(split_idx, split_idx);
     }
     for (int i=0; i<7; i++)
-        M_sub[i] = generate_zeros_mat(split_idx);
+        M_sub[i] = generate_zeros_mat(split_idx, split_idx);
 
     for (size_t i = 0; i < split_idx; i++)
         for (size_t j = 0; j < split_idx; j++) {
             a_sub[0].matrix[i][j] = A.matrix[i][j];
-            a_sub[1].matrix[i][j] = A.matrix[i][j + split_idx];
-            a_sub[2].matrix[i][j] = A.matrix[split_idx + i][j];
-            a_sub[3].matrix[i][j] = A.matrix[i + split_idx][j + split_idx];
+            a_sub[1].matrix[i][j] = (j + split_idx < A.col) ? A.matrix[i][j + split_idx] : 0;
+            a_sub[2].matrix[i][j] = (i + split_idx < A.row) ? A.matrix[i + split_idx][j] : 0;
+            a_sub[3].matrix[i][j] = (i + split_idx < A.row && j + split_idx < A.col)
+                                        ? A.matrix[i + split_idx][j + split_idx] : 0;
 
             b_sub[0].matrix[i][j] = B.matrix[i][j];
-            b_sub[1].matrix[i][j] = B.matrix[i][j + split_idx];
-            b_sub[2].matrix[i][j] = B.matrix[split_idx + i][j];
-            b_sub[3].matrix[i][j] = B.matrix[i + split_idx][j + split_idx];
+            b_sub[1].matrix[i][j] = (j + split_idx < B.col) ? B.matrix[i][j + split_idx] : 0;
+            b_sub[2].matrix[i][j] = (i + split_idx < B.row) ? B.matrix[i + split_idx][j] : 0;
+            b_sub[3].matrix[i][j] = (i + split_idx < B.row && j + split_idx < B.col)
+                                        ? B.matrix[i + split_idx][j + split_idx] : 0;
         }
 
     Matrix temp[2];
-    temp[0] = generate_zeros_mat(split_idx);
-    temp[1] = generate_zeros_mat(split_idx);
+    temp[0] = generate_zeros_mat(split_idx, split_idx);
+    temp[1] = generate_zeros_mat(split_idx, split_idx);
 
     mat_add(a_sub[0], a_sub[3], &temp[0]);
     mat_add(b_sub[0], b_sub[3], &temp[1]);
@@ -142,10 +144,11 @@ void mat_mul_strenssen(Matrix A, Matrix B, Matrix* C)
 
     for (size_t i = 0; i < split_idx; i++)
         for (size_t j = 0; j < split_idx; j++) {
-            C->matrix[i][j]                     = c_sub[0].matrix[i][j];
-            C->matrix[i][j+split_idx]           = c_sub[1].matrix[i][j];;
-            C->matrix[i+split_idx][j]           = c_sub[2].matrix[i][j];;
-            C->matrix[i+split_idx][j+split_idx] = c_sub[3].matrix[i][j];;
+            C->matrix[i][j] = c_sub[0].matrix[i][j];
+            if (j+split_idx < C->col) C->matrix[i][j+split_idx] = c_sub[1].matrix[i][j];;
+            if (i+split_idx < C->row) C->matrix[i+split_idx][j] = c_sub[2].matrix[i][j];;
+            if (i+split_idx < C->row && j+split_idx < C->col)
+                C->matrix[i+split_idx][j+split_idx] = c_sub[3].matrix[i][j];;
         }
 
     destroy_mat(temp[0]);

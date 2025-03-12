@@ -39,9 +39,9 @@ int main(int argc, char const *argv[])
 {
     MatrixConfig config = parse_args(argc, argv);
     const size_t n = config.rows;
-    Matrix mat_A = generate_sequential_mat(n);
-    Matrix mat_B = generate_sequential_mat(n);
-    Matrix mat_C = generate_zeros_mat(n);
+    Matrix mat_A = generate_random_mat(n, n);
+    Matrix mat_B = generate_random_mat(n, n);
+    Matrix mat_C = generate_zeros_mat(n, n);
 
     clock_t start, end;
     double cpu_time_used;

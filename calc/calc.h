@@ -3,9 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
+#include <stdbool.h>
 #include "../generate_mat/generate_mat.h"
 #include "../utils/helper_func.h"
+
+#define NORMAL_MUL_THRESHOLD 128
 
 
 /**

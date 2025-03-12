@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SEED 49
 
 typedef struct
 {
@@ -28,13 +29,15 @@ Matrix generate_sequential_mat(size_t n);
  * @param n Size of the matrix
  * @return matrix Generated square matrix.
  */
-Matrix generate_zeros_mat(size_t n);
+Matrix generate_zeros_mat(size_t nrow, size_t ncol);
 
+
+Matrix generate_random_mat(size_t nrow, size_t ncol);
 
 /**
  * @brief Free the memory allocated for the matrix.
  * 
- * @param mat Pointer to the matrix. 
+ * @param mat Pointer to the matrix.
  */
 void destroy_mat(Matrix mat);
 
