@@ -6,7 +6,7 @@
 #include "calc/calc.h"
 
 
-#define PRINTING 1
+#define PRINTING 0
 
 typedef struct {
     size_t rows_A;
@@ -57,12 +57,14 @@ int main(int argc, char const *argv[])
         print_mat(mat_B, "B");
     }
 
+#if 0
     start = clock();
     mat_mul_naive(mat_A, mat_B, &mat_C);
     end = clock();
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("Time taken naive: %f seconds\n", cpu_time_used);
-    print_mat(mat_C, "Naive");
+    if (PRINTING) print_mat(mat_C, "Naive");
+#endif
 
     start = clock();
     mat_mul_strenssen(mat_A, mat_B, &mat_C);

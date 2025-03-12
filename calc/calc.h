@@ -9,7 +9,7 @@
 
 #define OUTER_THRESHOLD 128
 #define INNER_THRESHOLD 64
-#define SCALED_THRESHOLD_FACTOR 1000
+#define SCALED_THRESHOLD_FACTOR 1024
 
 
 /**
@@ -31,10 +31,10 @@ void mat_mul_naive(Matrix mat_A, Matrix mat_B, Matrix* mat_C);
  * @param mat_B Second matrix to be summed.
  * @param mat_C Resulten matrix of the summed.
  */
-void mat_add(Matrix mat_A, Matrix mat_B, Matrix* mat_C);
+void mat_add(const Matrix mat_A, const Matrix mat_B, Matrix* mat_C);
 
 
-void mat_sub(Matrix mat_A, Matrix mat_B, Matrix* mat_C);
+void mat_sub(const Matrix mat_A, const Matrix mat_B, Matrix* mat_C);
 
 /**
  * @brief Strenssen algorithm for matrix multiplication using divide and conquer.
@@ -43,6 +43,6 @@ void mat_sub(Matrix mat_A, Matrix mat_B, Matrix* mat_C);
  * @param B Second input matrix.
  * @param C Resultant matrix. If the matrix is empty, default to the zero matrix.
  */
-void mat_mul_strenssen(Matrix A, Matrix B, Matrix* C);
+void mat_mul_strenssen(const Matrix A, const Matrix B, Matrix* C);
 
 #endif

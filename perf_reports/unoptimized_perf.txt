@@ -1,0 +1,34 @@
+Time taken Stranssen: 4.791954 seconds
+
+ Performance counter stats for './app 1000 10000 1000 10':
+
+           4964.82 msec task-clock:u                     #    0.936 CPUs utilized             
+                 0      context-switches:u               #    0.000 /sec                      
+                 0      cpu-migrations:u                 #    0.000 /sec                      
+            133496      page-faults:u                    #   26.888 K/sec                     
+       22465957712      cycles:u                         #    4.525 GHz                         (39.74%)
+          51954713      stalled-cycles-frontend:u        #    0.23% frontend cycles idle        (39.89%)
+          19816392      stalled-cycles-backend:u         #    0.09% backend cycles idle         (40.13%)
+       44869866972      instructions:u                   #    2.00  insn per cycle            
+                                                  #    0.00  stalled cycles per insn     (40.31%)
+        1386669869      branches:u                       #  279.299 M/sec                       (40.50%)
+           5813308      branch-misses:u                  #    0.42% of all branches             (40.63%)
+       27466660911      L1-dcache-loads:u                #    5.532 G/sec                       (40.47%)
+        8419736600      L1-dcache-load-misses:u          #   30.65% of all L1-dcache accesses   (40.27%)
+   <not supported>      LLC-loads:u                                                           
+   <not supported>      LLC-load-misses:u                                                     
+          23371365      L1-icache-loads:u                #    4.707 M/sec                       (40.08%)
+             39576      L1-icache-load-misses:u          #    0.17% of all L1-icache accesses   (39.90%)
+        1582661560      dTLB-loads:u                     #  318.775 M/sec                       (39.75%)
+          29558956      dTLB-load-misses:u               #    1.87% of all dTLB cache accesses  (39.57%)
+             14721      iTLB-loads:u                     #    2.965 K/sec                       (39.58%)
+              6095      iTLB-load-misses:u               #   41.40% of all iTLB cache accesses  (39.59%)
+         948666059      L1-dcache-prefetches:u           #  191.078 M/sec                       (39.59%)
+   <not supported>      L1-dcache-prefetch-misses:u                                           
+
+       5.305896642 seconds time elapsed
+
+       4.790209000 seconds user
+       0.168405000 seconds sys
+
+
