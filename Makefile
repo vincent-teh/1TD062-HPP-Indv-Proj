@@ -1,9 +1,9 @@
 CC = gcc
 # CFLAGS = -Igraphics -Wall -Wextra -O3 -ffast-math -funroll-loops -flto -ftree-vectorize
-CFLAGS = -Igraphics -Wall -Wextra -O3
+CFLAGS = -Igraphics -Wall -Wextra -g
 TARGET = app
 SUB_DIR = generate_mat utils calc
-SUB_TARGET = generate_mat/generate_mat.o utils/helper_func.o calc/calc.o
+SUB_TARGET = generate_mat/generate_mat.o utils/helper_func.o calc/calc.o calc/strassen.o
 LDLIBS = -lm
 
 all: $(SUB_TARGET) $(TARGET)

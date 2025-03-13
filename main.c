@@ -4,6 +4,7 @@
 #include "generate_mat/generate_mat.h"
 #include "utils/helper_func.h"
 #include "calc/calc.h"
+#include "calc/strassen.h"
 
 
 #define PRINTING 0
@@ -57,7 +58,7 @@ int main(int argc, char const *argv[])
         print_mat(mat_B, "B");
     }
 
-#if 0
+#if 1
     start = clock();
     mat_mul_naive(mat_A, mat_B, &mat_C);
     end = clock();
@@ -66,15 +67,28 @@ int main(int argc, char const *argv[])
     if (PRINTING) print_mat(mat_C, "Naive");
 #endif
 
+#if 1
     start = clock();
     mat_mul_strenssen(mat_A, mat_B, &mat_C);
     end = clock();
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("Time taken Stranssen: %f seconds\n", cpu_time_used);
     if (PRINTING) print_mat(mat_C, "Stranssen");
+#endif
+
+
+#if 1
+    start = clock();
+    mat_mul_strassen_static(mat_A, mat_B, &mat_C);
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Time taken Stranssen: %f seconds\n", cpu_time_used);
+    if (PRINTING) print_mat(mat_C, "Stranssen");
+#endif
 
     destroy_mat(mat_A);
     destroy_mat(mat_B);
     destroy_mat(mat_C);
+
     return 0;
 }
